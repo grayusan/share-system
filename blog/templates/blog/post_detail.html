@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+  {% if user.username in object.allowed_list %}
+  <div>
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="#">{{ object.author }}</a>
+          <small class="text-muted">{{ object.published_date|date:"F d, Y"}}</small>
+        </div>
+        <h1　class="article-title">{{ object.title }}</h1>
+        <div class="markdown-style">
+          <p class="article-content">{{ object.text}}</p>
+        </div>
+      </div>
+    </article>
+  </div>
+  {% else %}
+  <p>You cannnot view this page</p>
+  {% endif %}
+{% endblock content %}
