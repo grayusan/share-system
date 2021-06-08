@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
 
 from pathlib import Path
 import environ
@@ -44,6 +45,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'users',
+
+    #allauthを使用するために追加する
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'django.contrib.humanize',
 
 ]
 
@@ -121,6 +130,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+#allauthが使用するためSITE_IDを指定する
+SITE_ID = 1
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+# ユーザー名を使用する
+ACCOUNT_USERNAME_REQUIRED = True
+
+# ユーザー登録確認メールは送信しない
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 #ユーザーモデルの拡張(customuser)
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -133,3 +152,13 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'accounts/login'
+
+LOGIN_REDIRECT_URL = "/"
+
+#LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+ACCOUNT_LOGOUT_ON_GET = True
+
+
