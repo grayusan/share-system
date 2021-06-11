@@ -1,4 +1,4 @@
-# from users.models import CustomUser
+from users.models import CustomUser
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -64,3 +64,13 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class Document(models.Model):
+    id = models.BigAutoField(primary_key=True,unique=True)
+    name = models.CharField(max_length=255, blank=False)
+    document = models.FileField(upload_to='documents/')
+    target = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='taget-post')
+    created_at = models.DateTimeField('created_date', default=timezone.now)
+
+    def __str__(self):
+        return self.name

@@ -7,7 +7,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post
+from .models import Post, Document
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # from users.models import CustomUser
 from django.views import generic
@@ -63,3 +63,22 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == post.author:
             return True
         return False
+
+class DocumentView(generic.CreateView):
+   
+    model = Document
+    fields = ('documents', 'name')
+    template_name = 'blog/document_form.html'
+ 
+    def form_valid(self, form):
+        post_pk = self.kwargs['pk']
+        post = get_object_or_404(Post, pk=post_pk)
+ 
+        # 紐づく記事を設定する
+        document = form.save(commit=False)
+        document.target = post
+        document.name = self.request.user
+        document.save()
+ 
+        # 記事詳細にリダイレクト
+        return redirect('blog:post-detail', pk=post_pk)
